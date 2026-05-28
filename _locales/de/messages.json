@@ -18,12 +18,21 @@
       "message": "Gespeicherte URLs mit Farben"
     },
     "helpTextLbl": {
-      "message": "Geben Sie den URL-Präfix ein, um die Farbe der oberen Business Central-Leiste zu ändern.\nSie können mehrere URLs hinzufügen. Voreingestellt wird die URL bei dem ersten '?' getrennt.\nSie können aber frei wählen, bis zu welchem Zeichen die URL erkannt werden soll.\nKopieren Sie den Start der URL bis zu einem beliebigen Zeichen in das Base-URL Feld.\n\n✨Neu in Version 4.0:✨\nAuch in Cloudumgebung wird die Leiste wie von OnPrem gewohnt vollständig eingefärbt."
+      "message": "Geben Sie den URL-Präfix ein, um die Farbe der oberen Business Central-Leiste zu ändern.\nSie können mehrere URLs hinzufügen. Voreingestellt wird die URL bei dem ersten '?' getrennt.\nSie können aber frei wählen, bis zu welchem Zeichen die URL erkannt werden soll.\nKopieren Sie den Start der URL bis zu einem beliebigen Zeichen in das Base-URL Feld.\n\n✨Neu in Version 4.1:✨\nAuch in Cloudumgebung wird die Leiste wie von OnPrem gewohnt vollständig eingefärbt.\nZusätzlich können Sie ihre URLs jetzt auch als JSON-Datei exportieren und importieren. So können Sie Ihre Einstellungen ganz einfach sichern oder mit anderen teilen."
     },
     "openTableLbl": {
       "message": "Tabelle in neuem Tab öffnen"
     },
     "openTableHelpLbl": {
       "message": "Das Öffnen der Tabelle in einem neuen Tab ist derzeit nicht möglich.\nBitte stellen Sie sicher, dass die Seiteninspektion geöffnet ist."
+    },
+    "importExportTitleLbl": {
+      "message": "Import / Export"
+    },
+    "exportButtonLbl": {
+      "message": "JSON exportieren"
+    },
+    "dropZoneTextLbl": {
+      "message": "JSON-Datei hier ablegen oder klicken zum Importieren"
     }
 }

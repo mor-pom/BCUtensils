@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupAddUrlColorButton();
     checkTableIdAndToggleButton();
     setupopenTableButton();
+    setupImportExport();
 });
 
 // Show/hide OpenTableButton based on table ID presence
@@ -114,6 +115,10 @@ function initializeUI() {
     document.querySelector('label[for="color"]').textContent = chrome.i18n.getMessage('ColorLbl');
     document.querySelector('.list-title').textContent = chrome.i18n.getMessage('URLListLbl');
     helpButton.title = chrome.i18n.getMessage('helpLbl') || 'Help';
+
+    document.getElementById('importExportTitle').textContent = chrome.i18n.getMessage('importExportTitleLbl') || 'Import / Export';
+    document.getElementById('exportButton').textContent = chrome.i18n.getMessage('exportButtonLbl') || 'Export JSON';
+    document.getElementById('dropZoneText').textContent = chrome.i18n.getMessage('dropZoneTextLbl') || 'Drop JSON file here or click to import';
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (tabs.length > 0) {
@@ -188,4 +193,87 @@ function setupopenTableButton() {
             });
         });
     }
+}
+
+function setupImportExport() {
+    const exportButton = document.getElementById('exportButton');
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+
+    // Export
+    exportButton.addEventListener('click', () => {
+        chrome.storage.sync.get('url_dict', (data) => {
+            const url_dict = data.url_dict || {};
+            const json = JSON.stringify(url_dict, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'bcutensils-urls.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    });
+
+    // Import via click
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleImportFile(e.target.files[0]);
+            fileInput.value = '';
+        }
+    });
+
+    // Import via drag and drop
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+    });
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+    });
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        if (e.dataTransfer.files.length > 0) {
+            handleImportFile(e.dataTransfer.files[0]);
+        }
+    });
+}
+
+function handleImportFile(file) {
+    if (!file.name.endsWith('.json')) {
+        alert('Please provide a .json file.');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const imported = JSON.parse(e.target.result);
+            if (typeof imported !== 'object' || Array.isArray(imported)) {
+                alert('Invalid format: expected a JSON object.');
+                return;
+            }
+            // Validate structure
+            for (const [key, value] of Object.entries(imported)) {
+                if (!Array.isArray(value) || value.length < 2 ||
+                    typeof value[0] !== 'string' || typeof value[1] !== 'boolean') {
+                    alert(`Invalid entry for "${key}". Expected [colorString, boolean].`);
+                    return;
+                }
+            }
+            chrome.storage.sync.get('url_dict', (data) => {
+                const url_dict = data.url_dict || {};
+                Object.assign(url_dict, imported);
+                chrome.storage.sync.set({ url_dict }, () => {
+                    updateUrlList(url_dict);
+                    refreshStyles();
+                });
+            });
+        } catch {
+            alert('Failed to parse JSON file.');
+        }
+    };
+    reader.readAsText(file);
 }

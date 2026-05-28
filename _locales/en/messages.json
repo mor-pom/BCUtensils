@@ -18,12 +18,21 @@
       "message": "Saved URLs with Colors"
     },
     "helpTextLbl": {
-      "message": "Enter the URL prefix to change the color of the Business Central top bar.\nYou can add multiple URLs. By default, the URL is separated at the first '?'.\nHowever, you can freely choose up to which character the URL should be recognized.\nJust copy the start of the URL into the Base-URL field.\n\n✨New in Version 4.0:✨\nThe top bar is now fully colored in cloud environments, just like in OnPrem."
+      "message": "Enter the URL prefix to change the color of the Business Central top bar.\nYou can add multiple URLs. By default, the URL is separated at the first '?'.\nHowever, you can freely choose up to which character the URL should be recognized.\nJust copy the start of the URL into the Base-URL field.\n\n✨New in Version 4.1:✨\nThe top bar is now fully colored in cloud environments, just like in OnPrem.\nAdditionally, you can now also export and import your URLs as a JSON file. This way you can easily back up your settings or share them with others."
     },
     "openTableLbl": {
       "message": "Open Table in new Tab"
     },
     "openTableHelpLbl": {
       "message": "Open Table in new Tab is currently not possible.\nPlease make sure to open Page Inspection first."
+    },
+    "importExportTitleLbl": {
+      "message": "Import / Export"
+    },
+    "exportButtonLbl": {
+      "message": "Export JSON"
+    },
+    "dropZoneTextLbl": {
+      "message": "Drop JSON file here or click to import"
     }
 }

@@ -18,12 +18,21 @@
       "message": "URL enregistrées avec couleurs"
     },
     "helpTextLbl": {
-      "message": "Entrez le préfixe de l'URL pour changer la couleur de la barre supérieure de Business Central.\nVous pouvez ajouter plusieurs URL. Par défaut, l'URL est séparée au premier '?'.\nCependant, vous pouvez librement choisir jusqu'à quel caractère l'URL doit être reconnue.\nIl suffit de copier le début de l'URL dans le champ Base-URL.\n\n✨Nouveau dans la version 4.0:✨\nLa barre supérieure est maintenant entièrement colorée dans les environnements cloud, tout comme dans OnPrem."
+      "message": "Entrez le préfixe de l'URL pour changer la couleur de la barre supérieure de Business Central.\nVous pouvez ajouter plusieurs URL. Par défaut, l'URL est séparée au premier '?'.\nCependant, vous pouvez librement choisir jusqu'à quel caractère l'URL doit être reconnue.\nIl suffit de copier le début de l'URL dans le champ Base-URL.\n\n✨Nouveau dans la version 4.1:✨\nLa barre supérieure est maintenant entièrement colorée dans les environnements cloud, tout comme dans OnPrem.\nDe plus, vous pouvez maintenant exporter et importer vos URL sous forme de fichier JSON. Cela vous permet de sauvegarder facilement vos paramètres ou de les partager avec d'autres."
     },
     "openTableLbl": {
       "message": "Ouvrir la table dans un nouvel onglet"
     },
     "openTableHelpLbl": {
       "message": "Ouvrir la table dans un nouvel onglet n'est actuellement pas possible.\nVeuillez vous assurer d'ouvrir d'abord l'inspection de la page."
+    },
+    "importExportTitleLbl": {
+      "message": "Import / Export"
+    },
+    "exportButtonLbl": {
+      "message": "Exporter JSON"
+    },
+    "dropZoneTextLbl": {
+      "message": "Déposez le fichier JSON ici ou cliquez pour importer"
     }
 }

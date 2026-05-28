@@ -259,6 +259,35 @@
         z-index: 1000;
       }
 
+      .import-export-section {
+        position: relative;
+        z-index: 1;
+        margin-top: 14px;
+      }
+
+      #exportButton {
+        margin-bottom: 10px;
+      }
+
+      .drop-zone {
+        position: relative;
+        border: 2px dashed #cad5e4;
+        border-radius: 10px;
+        padding: 18px 12px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 12px;
+        color: var(--muted);
+        background: #fbfdff;
+        transition: border-color 0.2s ease, background 0.2s ease;
+      }
+
+      .drop-zone:hover,
+      .drop-zone.drag-over {
+        border-color: var(--primary);
+        background: #edf4fb;
+      }
+
       @media (max-width: 430px) {
         body {
           width: auto;
@@ -291,6 +320,15 @@
 
       <h4 class="list-title">Saved URLs with Colors</h4>
       <ul id="urlList"></ul>
+
+      <div class="import-export-section">
+        <h4 class="list-title" id="importExportTitle">Import / Export</h4>
+        <button class="button" id="exportButton">Export JSON</button>
+        <div class="drop-zone" id="dropZone">
+          <span id="dropZoneText">Drop JSON file here or click to import</span>
+          <input type="file" id="fileInput" accept=".json" hidden />
+        </div>
+      </div>
 
       <div id="helpWindow">
         <p id="helpTextLbl"></p>
