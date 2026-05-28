@@ -8,13 +8,26 @@
     const DEFAULT_MENUBAR_COLOR = '#282828';
     const TABLE_ID_SELECTOR = '[role="textbox"][tabindex="0"]';
 
-    const MENUBAR_CSS = (color) =>
-        `#product-menu-bar, #O365_NavHeader, #product-menu-bar *, #O365_NavHeader * {
+    function isLightColor(hex) {
+        const c = hex.replace('#', '');
+        const r = parseInt(c.substring(0, 2), 16);
+        const g = parseInt(c.substring(2, 4), 16);
+        const b = parseInt(c.substring(4, 6), 16);
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        return luminance > 0.5;
+    }
+
+    const MENUBAR_CSS = (color) => {
+        const textColor = isLightColor(color) ? '#000000' : '';
+        const colorRule = textColor ? `color: ${textColor} !important;` : '';
+        return `#product-menu-bar, #O365_NavHeader, #product-menu-bar *, #O365_NavHeader * {
             background-color: ${color} !important;
             border-color: transparent !important;
             outline-color: transparent !important;
             box-shadow: none !important;
+            ${colorRule}
         }`;
+    };
 
     const DARK_MODE_CSS = `
         html {
@@ -37,6 +50,11 @@
             document.head.appendChild(style);
         }
         style.textContent = color ? MENUBAR_CSS(color) : '';
+        if (!color) {
+            document.querySelectorAll('#product-menu-bar *, #O365_NavHeader *').forEach(el => {
+                el.style.color = '';
+            });
+        }
     }
 
     function applyDarkMode(darkModeOn) {
