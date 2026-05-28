@@ -31,7 +31,7 @@
 
     const DARK_MODE_CSS = `
         html {
-            filter: invert(1) hue-rotate(180deg) contrast(0.9) brightness(1.1);
+            filter: invert(1) hue-rotate(180deg) contrast(0.75) brightness(1.1);
         }
         img,
         video,
