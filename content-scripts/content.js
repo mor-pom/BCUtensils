@@ -5,7 +5,6 @@
     // Constants
     const MENUBAR_STYLE_ID = 'bc-colorator-menubar-style';
     const DARK_MODE_STYLE_ID = 'dark-mode-style';
-    const DEFAULT_MENUBAR_COLOR = '#282828';
     const TABLE_ID_SELECTOR = '[role="textbox"][tabindex="0"]';
 
     function isLightColor(hex) {
@@ -20,7 +19,9 @@
     const MENUBAR_CSS = (color) => {
         const textColor = isLightColor(color) ? '#000000' : '';
         const colorRule = textColor ? `color: ${textColor} !important;` : '';
-        return `#product-menu-bar, #O365_NavHeader, #product-menu-bar *, #O365_NavHeader * {
+        const badgeGuard = ':not([class*="badge-coin-root"]):not([class*="badge-coin-root"] *)';
+        return `#product-menu-bar, #O365_NavHeader,
+            #product-menu-bar *${badgeGuard}, #O365_NavHeader *${badgeGuard} {
             background-color: ${color} !important;
             border-color: transparent !important;
             outline-color: transparent !important;
@@ -101,7 +102,7 @@
             applyMenuBarColor(color);
             applyDarkMode(darkMode);
         } else {
-            applyMenuBarColor(DEFAULT_MENUBAR_COLOR);
+            applyMenuBarColor(null);
             applyDarkMode(false);
         }
     }
