@@ -20,12 +20,6 @@
     "helpTextLbl": {
       "message": "Introduzca el prefijo de la URL para cambiar el color de la barra superior de Business Central.\nPuede añadir varias URL. Por defecto, la URL se separa en el primer '?'.\nSin embargo, puede elegir libremente hasta qué carácter debe reconocerse la URL.\nSimplemente copie el inicio de la URL en el campo Base-URL.\n\n✨Nueva en la versión 4.1:✨\nTambién en entornos en la nube, la barra se colorea completamente como en OnPrem.\nAdemás, ahora también puede exportar e importar sus URLs como un archivo JSON. De esta manera, puede hacer una copia de seguridad de su configuración o compartirla con otros fácilmente."
     },
-    "openTableLbl": {
-      "message": "Abrir tabla en nueva pestaña"
-    },
-    "openTableHelpLbl": {
-      "message": "Abrir tabla en nueva pestaña no es posible en este momento.\nPor favor, asegúrese de abrir primero la inspección de página."
-    },
     "importExportTitleLbl": {
       "message": "Importar / Exportar"
     },
@@ -34,5 +28,11 @@
     },
     "dropZoneTextLbl": {
       "message": "Suelta el archivo JSON aquí o haz clic para importar"
+    },
+    "expandAllLbl": {
+      "message": "Expandir todas las secciones"
+    },
+    "collapseAllLbl": {
+      "message": "Contraer todas las secciones"
     }
 }

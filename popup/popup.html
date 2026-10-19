@@ -229,16 +229,23 @@
         font-weight: 700;
       }
 
-      #openTableButton {
-        background: linear-gradient(180deg, #de6b2f, #b84f1c);
-        font-size: 15px;
+      #expandAllButton {
+        background: linear-gradient(180deg, #2f8a6b, #1d6149);
       }
 
-      #openTableButton:disabled {
-        background: linear-gradient(180deg, #a9b1bf, #828d9e);
-        cursor: not-allowed;
-        filter: grayscale(0.18);
-        transform: none;
+      #collapseAllButton {
+        background: linear-gradient(180deg, #de6b2f, #b84f1c);
+      }
+
+      #expandAllButton svg,
+      #collapseAllButton svg {
+        width: 16px;
+        height: 16px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
       }
 
       #helpWindow {
@@ -301,8 +308,12 @@
       <div class="header-row">
         <h3>BC Menu-Bar Colorator</h3>
         <div class="icon-actions">
-          <button class="circle-btn" id="openTableButton" title="Open table"></button>
-          <button class="circle-btn" id="helpButton" title="Help">?</button>
+          <button class="circle-btn" id="expandAllButton" title="Expand all">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M8 4h4v4M4 8v4h4" /></svg>
+          </button>
+          <button class="circle-btn" id="collapseAllButton" title="Collapse all">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 3 9 7M9 4v3h3M3 13l4-4M4 9h3v3" /></svg>
+          </button>          <button class="circle-btn" id="helpButton" title="Help">?</button>
         </div>
       </div>
 

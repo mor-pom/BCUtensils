@@ -5,7 +5,6 @@
     // Constants
     const MENUBAR_STYLE_ID = 'bc-colorator-menubar-style';
     const DARK_MODE_STYLE_ID = 'dark-mode-style';
-    const TABLE_ID_SELECTOR = '[role="textbox"][tabindex="0"]';
 
     function isLightColor(hex) {
         const c = hex.replace('#', '');
@@ -107,14 +106,73 @@
         }
     }
 
-    function getTableIdElement() {
-        return document.querySelectorAll(TABLE_ID_SELECTOR)[1];
+    // Expand / collapse all FastTabs and their "Show more" sections
+    const FASTTAB_HEADER_SELECTOR = '.ms-nav-band .ms-nav-columns-caption[role="button"][aria-expanded]';
+    const TOGGLE_SELECTOR = 'button, a, [role="button"]';
+    const SHOW_MORE_LABELS = ['show more', 'mehr anzeigen', 'afficher plus', 'mostrar más'];
+    const SHOW_LESS_LABELS = ['show less', 'weniger anzeigen', 'afficher moins', 'mostrar menos'];
+    const MAX_PASSES = 5;
+    const PASS_DELAY_MS = 300;
+
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+    function getBCDocuments() {
+        const docs = [document];
+        document.querySelectorAll('iframe').forEach(iframe => {
+            try {
+                if (iframe.contentDocument) docs.push(iframe.contentDocument);
+            } catch {
+                // Cross-origin iframe, not the BC client
+            }
+        });
+        return docs;
     }
 
-    function extractTableId(el) {
-        if (!el) return null;
-        const match = el.textContent.match(/\(([^)]+)\)/);
-        return match ? match[1] : null;
+    function queryAllDocs(selector) {
+        return getBCDocuments().flatMap(doc => [...doc.querySelectorAll(selector)])
+            .filter(el => el.getClientRects().length > 0);
+    }
+
+    function labelOf(el) {
+        return el.textContent.trim().toLowerCase();
+    }
+
+    function isShowMoreLess(el) {
+        const label = labelOf(el);
+        return SHOW_MORE_LABELS.includes(label) || SHOW_LESS_LABELS.includes(label);
+    }
+
+    function findFastTabHeaders(expanded) {
+        return queryAllDocs(FASTTAB_HEADER_SELECTOR)
+            .filter(el => el.getAttribute('aria-expanded') === String(expanded) && !isShowMoreLess(el));
+    }
+
+    function findShowToggles(labels) {
+        return queryAllDocs(TOGGLE_SELECTOR).filter(el => labels.includes(labelOf(el)));
+    }
+
+    // Expanding a FastTab renders its "Show more" button asynchronously, so we run
+    // several passes. Each element is clicked at most once to avoid toggling it back.
+    async function toggleAll(findToggles) {
+        const clicked = new Set();
+        for (let pass = 0; pass < MAX_PASSES; pass++) {
+            const toggles = findToggles().filter(el => !clicked.has(el));
+            if (!toggles.length) break;
+            toggles.forEach(el => {
+                clicked.add(el);
+                el.click();
+            });
+            await sleep(PASS_DELAY_MS);
+        }
+        return clicked.size;
+    }
+
+    function expandAll() {
+        return toggleAll(() => [...findFastTabHeaders(false), ...findShowToggles(SHOW_MORE_LABELS)]);
+    }
+
+    function collapseAll() {
+        return toggleAll(() => [...findShowToggles(SHOW_LESS_LABELS), ...findFastTabHeaders(true)]);
     }
 
     // Message listeners
@@ -126,14 +184,9 @@
             chrome.storage.sync.get('url_dict', (data) => {
                 applyStyles(data.url_dict || {});
             });
-        } else if (message.action === 'openTableExternally') {
-            const tableId = extractTableId(getTableIdElement());
-            if (tableId) {
-                const baseURL = window.location.href.split('?')[0];
-                window.open(`${baseURL}?table=${tableId}`, '_blank');
-            }
-        } else if (message.action === 'checkTableIdPresent') {
-            sendResponse({ found: !!extractTableId(getTableIdElement()) });
+        } else if (message.action === 'expandAll' || message.action === 'collapseAll') {
+            const run = message.action === 'expandAll' ? expandAll : collapseAll;
+            run().then(count => sendResponse({ count }));
             return true;
         }
     });

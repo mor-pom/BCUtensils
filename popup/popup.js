@@ -81,30 +81,27 @@ document.addEventListener('DOMContentLoaded', () => {
     loadStoredData();
     setupHelpButton();
     setupAddUrlColorButton();
-    checkTableIdAndToggleButton();
-    setupopenTableButton();
+    setupExpandCollapseButtons();
     setupImportExport();
 });
 
-// Show/hide OpenTableButton based on table ID presence
-function checkTableIdAndToggleButton() {
-    const openTableButton = document.getElementById('openTableButton');
-    if (!openTableButton) return;
-    openTableButton.textContent = '↗';
-    openTableButton.style.display = 'inline-flex';
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs.length > 0) {
-            chrome.tabs.sendMessage(tabs[0].id, { action: 'checkTableIdPresent' }, (response) => {
-                if (response && response.found) {
-                    openTableButton.disabled = false;
-                    openTableButton.title = chrome.i18n.getMessage('openTableLbl');
-                } else {
-                    openTableButton.disabled = true;
-                    openTableButton.title = chrome.i18n.getMessage('openTableHelpLbl');
+function setupExpandCollapseButtons() {
+    const buttons = {
+        expandAll: document.getElementById('expandAllButton'),
+        collapseAll: document.getElementById('collapseAllButton')
+    };
+    buttons.expandAll.title = chrome.i18n.getMessage('expandAllLbl') || 'Expand all';
+    buttons.collapseAll.title = chrome.i18n.getMessage('collapseAllLbl') || 'Collapse all';
+
+    for (const [action, button] of Object.entries(buttons)) {
+        button.addEventListener('click', () => {
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                if (tabs.length > 0) {
+                    chrome.tabs.sendMessage(tabs[0].id, { action });
                 }
             });
-        }
-    });
+        });
+    }
 }
 
 function initializeUI() {
@@ -175,24 +172,6 @@ function setupAddUrlColorButton() {
             });
         }
     });
-}
-
-function setupopenTableButton() {
-    const openTableButton = document.getElementById('openTableButton');
-    if (openTableButton) {
-        openTableButton.addEventListener('click', (e) => {
-            if (openTableButton.disabled) {
-                alert('Open Table in new Tab is currently not possible. Please open Page Inspection first.');
-                e.preventDefault();
-                return;
-            }
-            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-                if (tabs.length > 0) {
-                    chrome.tabs.sendMessage(tabs[0].id, { action: 'openTableExternally' });
-                }
-            });
-        });
-    }
 }
 
 function setupImportExport() {
